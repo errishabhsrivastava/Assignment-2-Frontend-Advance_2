@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Spinner from 'react-spinkit';
 import './App.css';
 // import './ap.js';
 
@@ -16,6 +17,7 @@ function UserCard({ user }) {
 
   return (
     <>
+    
         <div className='cd'>
           <div className="card">
               <div className="images">
@@ -74,12 +76,15 @@ function UserCard({ user }) {
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     async function fetchData() {
       const response = await fetch('https://jsonplaceholder.typicode.com/users');
       const data = await response.json();
       setUsers(data);
+      setIsLoading(false);
     }
 
     fetchData();
@@ -87,7 +92,13 @@ function App() {
 
   return (
     <>
-    <h1 className='text-center'>User data</h1>
+      <h1 className='text-center'>User data</h1>
+  <div>
+    {isLoading ? (
+      <div className="spinner-wrapper">
+        <div className="spinner"></div>
+      </div>
+    ) : (
       <div className="container-fluid">
       <div className="row">
         {users.map(user => (
@@ -97,6 +108,8 @@ function App() {
         ))}
       </div>
     </div>
+    )}
+  </div>
     </>
   );
 }
